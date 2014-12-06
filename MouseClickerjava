@@ -17,12 +17,14 @@ public class MouseClicker implements MouseListener{
 		if(rayCastTime)//if the polygon has been drawn.
 		{
 			PolygonArea.rayCast(arg0.getX(), arg0.getY());
-			setDrawRay(true);	
+			setDrawRay(true);
+			
 		}
 		else//keep adding to the polygon
 		{
 			Interface.pa.addtoPoly(arg0.getX(), arg0.getY());
 		}
+		
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -60,3 +62,4 @@ public class MouseClicker implements MouseListener{
 		
 	}
 };
+	

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 public class PolygonArea extends JPanel{
 
 	private static Color polyColor;
-	private Polygon poly2;
+	private static Polygon poly2;
 	static MouseClicker click;
 	static int lineX;
 	static int lineY;
@@ -35,28 +35,25 @@ public class PolygonArea extends JPanel{
 		g.setColor(polyColor);
 		g.drawPolygon(poly2);
 		g.fillPolygon(poly2);
-		if(click.getDrawRay())//draw a line from user click
-		{
-			checkIntersections(poly2, new Point(lineX, lineY));
-			//g.drawLine(lineX, lineY, 512 ,lineY);
-			click.setDrawRay(false);
-		}
-		repaint();
+		//repaint();//Questionable
 	}
 	
 	public void addtoPoly(int x, int y)//adds a point to the polygon
 	{
-		poly2.addPoint(x, y);		
+		poly2.addPoint(x, y);
+		repaint();
 	}
 	
 	public void setColor(Color c)
 	{
 		polyColor = c;
+		repaint();
 	}
 
 	public void clearPolygon() {
 		
 		poly2.reset();
+		repaint();
 	}
 
 	public int getPoints() {
@@ -64,14 +61,22 @@ public class PolygonArea extends JPanel{
 		return poly2.npoints;
 	}
 	
+	//Sets the raycast's parameters
 	public static void rayCast(int x, int y)
 	{	
 		lineX = x;
 		lineY = y;
+		checkIntersections(poly2, new Point(lineX, lineY));
+		//g.drawLine(lineX, lineY, 512 ,lineY);
+		click.setDrawRay(false);
+		
+		
+	
 	}
-	private void checkIntersections(Polygon p, Point ray)
+	//Ryan's method to check the amount of intersections
+	public static void checkIntersections(Polygon p, Point ray)
 	{
-		intersections = 0;
+		int tintersections = 0;
 		Line2D rayLine = new Line2D.Double(ray.getX(), ray.getY(), 512, ray.getY());
 		Line2D curLine = new Line2D.Double();
 	
@@ -86,30 +91,34 @@ public class PolygonArea extends JPanel{
 				curLine = new Line2D.Double(p.xpoints[i], p.ypoints[i], p.xpoints[i+1], p.ypoints[i+1]);
 			}
 			
-			checkIntersect(rayLine, curLine);
+			tintersections += checkIntersect(rayLine, curLine);
 		}
-		if(intersections%2 != 0)
+		if(tintersections%2 != 0)
 		{
+			System.out.println("In");
 			JOptionPane.showMessageDialog(null, "Click lies in Polygon");
 		}
 		else
 		{
-			if(poly2.npoints == 0 || poly2 == null)
+			if(p.npoints == 0 || p == null)
 			{
 				JOptionPane.showMessageDialog(null, "Polygon not drawn");
 			}
 			else
 			{
+				System.out.println("Not in");
 				JOptionPane.showMessageDialog(null, "Click does not lie in Polygon");
 			}
 		}	
 	}
-	private void checkIntersect(Line2D l1, Line2D l2)
+	private static int checkIntersect(Line2D l1, Line2D l2)
 	{
 		if(l1.intersectsLine(l2))
 		{
-			intersections++;	
+			return 1;	
 		}
+		else
+			return 0;
 	}
 	public void undoPoint()
 	{
@@ -127,8 +136,8 @@ public class PolygonArea extends JPanel{
 		for(int i = 0; i < temp-1; i++)
 		{
 			newPoly.addPoint(poly2.xpoints[i],poly2.ypoints[i]);
+			repaint();
 		}
 		poly2 = newPoly;
 	}
 }
-

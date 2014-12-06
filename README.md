@@ -9,3 +9,5 @@ Contributors:
 - Nam
 - Tim
 - Ryan
+- Dillon
+- James

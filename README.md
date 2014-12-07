@@ -4,10 +4,14 @@ SEfall2014
 =======
 Group Project for Dr. Ding's Software Engineering I class.
 
-Contributors:
-- Michael Fisher (Git ID - MichaelFisherECU)
-- Nam
-- Tim
-- Ryan
-- Dillon
-- James
+Group Members
+- Kyle Williamson
+- Timothy Johnson
+- Dillon Roberts
+- Aaron Harris
+- Gregory Jenkins
+- James Tyson
+- Michael Fisher
+- Ryan Chartier
+- Thomas Lehman
+- Nam Thai

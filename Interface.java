@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/*
+ * Class that implements the GUi interface. Constructor contains most of the layout design. 
+ * Lets the user remove last point, change color, terminate program, check if a point is in the polygon, and clears the polygon.
+ */
 
 public class Interface extends JFrame{
 
@@ -20,9 +25,10 @@ public class Interface extends JFrame{
 	GridBagLayout layout,jpanelLayout;
 	GridBagConstraints c;
 	Container content;
-	ActionListener raycastButton, changeColorButton, undoButton, clearPolygon, points, paintAl, exitProgram;
+	ActionListener raycastButton, changeColorButton, undoButton, clearPolygon, points, paintAL, exitProgram;
 	static PolygonArea pa;
 	static Interface gui;
+	final static Dimension guiDimension = new Dimension(750,725);
 	
 	Interface(String name)
 	{
@@ -51,9 +57,6 @@ public class Interface extends JFrame{
 		
 		c.gridx = 1;
 		c.gridwidth = GridBagConstraints.RELATIVE;
-		c.ipady = 200;
-		c.ipadx = 300;
-		
 		
 		c.ipady = 25;
 		c.ipadx = 80;
@@ -66,7 +69,7 @@ public class Interface extends JFrame{
 		jpanelLayout = new GridBagLayout();
 		buttonArea.setLayout(jpanelLayout);
 		GridBagConstraints r = new GridBagConstraints();
-
+		
 		r.ipady = 25;
 		r.ipadx = 100;
 		buttonArea.add(raycastMode,r);
@@ -107,88 +110,97 @@ public class Interface extends JFrame{
 		r.gridy = 2;
 		r.ipadx = 41;
 		undoArea.add(terminate,r);
-		manageListeners(); //makes the acion listeners
+		
+		manageListeners(); 
+		
 		clear.addActionListener(clearPolygon);
 		raycastMode.addActionListener(raycastButton);
 		changeColor.addActionListener(changeColorButton);
 		pointNum.addActionListener(points);
-		paint.addActionListener(paintAl);
+		paint.addActionListener(paintAL);
 		undo.addActionListener(undoButton);
 		terminate.addActionListener(exitProgram);
 		
-	
 		pack();
 	}
 
 	public static void main(String[] args)
 	{
-		gui = new Interface("Version 1.0");
+		gui = new Interface("Version 1.1");
 		gui.setVisible(true);
-		gui.setSize(750,725);
+		gui.setSize(guiDimension);
 	}
-	private void manageListeners() {
-			
-			raycastButton = new ActionListener()//lets us start testing in/out
+	
+	private void manageListeners() 
+	{
+			raycastButton = new ActionListener()	//lets us start testing in/out
 			{
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent arg0) 
+				{
 					MouseClicker.setRayCastTime(true);
 				}
 				
 			};
 			
-			clearPolygon = new ActionListener()//clears panel and enables drawing
+			clearPolygon = new ActionListener()		//clears panel and enables drawing
 			{
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent arg0) 
+				{
 					MouseClicker.drawTime(false);
 					MouseClicker.setDrawRay(false);
-					pa.clearPolygon();
-					//JOptionPane.showMessageDialog(null, "Polygon cleared");	
+					pa.clearPolygon();	
 				}
 			};
 			
-			changeColorButton = new ActionListener()//changes the color of polygon
+			changeColorButton = new ActionListener()		//changes the color of polygon
 			{
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					pa.setColor(JColorChooser.showDialog( null, "Change Polygon Color", null));
+				public void actionPerformed(ActionEvent e) 
+				{
+					pa.setColor(JColorChooser.showDialog(
+							null, "Change Polygon Color", null));
 				}
 			};
 			
-			points = new ActionListener()//shows the number of points on current polygon
+			points = new ActionListener()		//shows the number of points on current polygon
 			{
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null, "Polygon has " + pa.getPoints() + " Points");
+				public void actionPerformed(ActionEvent e) 
+				{
+					JOptionPane.showMessageDialog(
+							null, "Polygon has " + pa.getPoints() + " Points");
 				}
 			};
 			
-			paintAl = new ActionListener()//shows the number of points on current polygon
+			paintAL = new ActionListener()		//lets us draw more of the polygon
 			{
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) 
+				{
 					MouseClicker.setRayCastTime(false);
 				}
 			};
 			
-			undoButton = new ActionListener()//shows the number of points on current polygon
+			undoButton = new ActionListener()		//undo last point in polygon
 			{
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) 
+				{
 					pa.undoPoint();
 				}
 			};
 		
-			exitProgram = new ActionListener()//shows the number of points on current polygon
+			exitProgram = new ActionListener()		//terminates program
 			{
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) 
+				{
 					System.exit(ABORT);
 				}
 			};
-
-		
 	}
 }
+
 
